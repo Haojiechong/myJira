@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta http-equiv="Access-Control-Allow-Origin" content="*" />
+		<meta http-equiv="content-security-policy" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jbase64.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+
+			function createWeekData() {
+				var jira = {
+					fields: {
+						project: {
+							key: "SHCMJJ"
+						}
+					}
+				};
+				//用户名和密码
+				var userPass = 'chonghaojie:czzrc75H';
+				//对用户名和密码进行编码
+				var userPassToBase64 = BASE64.encoder(userPass);
+				$.ajax({
+					data: jira,
+					type: "POST",
+					dataType: "JSON",
+					url: "http://www.broadtext.com.cn/work/rest/api/2/search",
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader("Authorization", "Basic " + userPassToBase64),
+							xhr.setRequestHeader("Content-Type", "application/json")
+					},
+					success: function(response) {
+						alert("success");
+					},
+					error: function(xhr, type, errorThrown) {
+						alert('wrong');
+					}
+				});
+			};
+
+			function createWeekData1() {
+				//用户名和密码
+				var userPass = 'chonghaojie:czzrc75H';
+				//对用户名和密码进行编码
+				var userPassToBase64 = BASE64.encoder(userPass);
+				mui.ajax('http://www.broadtext.com.cn/work/rest/api/2/issue/SHCMJJ-171', {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'POST', //HTTP请求类型
+					crossDomain: false,
+					headers: {
+						'Authorization': 'Base ' + userPassToBase64,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json',
+						'Cache-Control': 'no-cache'
+					},
+					success: function(data) {
+						mui.alert('success');
+					},
+					error: function(xhr, type, errorThrown) {
+						mui.alert('wrong');
+					}
+				});
+			}
+		</script>
+	</head>
+
+	<body>
+		<input type="button" value="生成" onclick="createWeekData();" />
+	</body>
+
+</html>

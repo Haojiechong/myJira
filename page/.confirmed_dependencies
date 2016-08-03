@@ -1,0 +1,10 @@
+{
+  "index.html": {
+    "resources": [
+      "js/jbase64.js",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "js/jquery.min.js"
+    ]
+  }
+}

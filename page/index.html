@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script src="js/jbase64.js"></script>
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			p {
+				text-indent: 22px;
+			}
+			
+			span.mui-icon {
+				font-size: 14px;
+				color: #007aff;
+				margin-left: -15px;
+				padding-right: 10px;
+			}
+			
+			.mui-off-canvas-left {
+				color: #fff;
+			}
+			
+			.title {
+				margin: 35px 15px 10px;
+			}
+			
+			.title+.content {
+				margin: 10px 15px 35px;
+				color: #bbb;
+				text-indent: 1em;
+				font-size: 14px;
+				line-height: 24px;
+			}
+			
+			input {
+				color: #000;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable mui-slide-in">
+			<!--侧滑菜单部分-->
+			<aside id="offCanvasSide" class="mui-off-canvas-left">
+				<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="title" style="margin-bottom: 25px;">
+							<ul id="toLoginPage">请登录</ul>
+						</div>
+						<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted">
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate-right">
+									Item 1
+								</a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate-right">
+									Item 2
+								</a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate-right">
+									Item 3
+								</a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate-right">
+									Item 4
+								</a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate-right">
+									Item 5
+								</a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate-right">
+									Item 6
+								</a>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+			</aside>
+			<!--主界面部分-->
+			<div class="mui-inner-wrap">
+				<header class="mui-bar mui-bar-nav">
+					<a href="#offCanvasSide" class="mui-icon mui-action-menu mui-icon-bars mui-pull-left"></a>
+					<a class="mui-action-back mui-btn mui-btn-link mui-pull-right">关闭</a>
+					<h1 class="mui-title">登录页面</h1>
+				</header>
+				<div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper" style="margin-top: 25px">
+					<form id='login-form' class="mui-input-group">
+						<div class="mui-input-row">
+							<label>账号</label>
+							<input id='account' type="text" placeholder="请输入账号">
+						</div>
+						<div class="mui-input-row">
+							<label>密码</label>
+							<input id='password' type="password" placeholder="请输入密码">
+						</div>
+					</form>
+					<p></p>
+					<form class="mui-input-group">
+						<ul class="mui-table-view mui-table-view-chevron">
+							<li class="mui-table-view-cell">
+								自动登录
+								<div id="autoLogin" class="mui-switch">
+									<div class="mui-switch-handle"></div>
+								</div>
+							</li>
+						</ul>
+					</form>
+					<div class="mui-content-padded" style="margin-top: 25px">
+						<button id='login' class="mui-btn mui-btn-block mui-btn-primary">登录</button>
+					</div>
+					<div class="mui-content-padded oauth-area">
+					</div>
+				</div>
+				<!-- off-canvas backdrop -->
+				<div class="mui-off-canvas-backdrop"></div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script>
+			mui.init();
+			//侧滑容器父节点
+			var offCanvasWrapper = mui('#offCanvasWrapper');
+			//主界面容器
+			//var offCanvasInner = offCanvasWrapper[0].querySelector('.mui-inner-wrap');
+			//菜单容器
+			//var offCanvasSide = document.getElementById("offCanvasSide");
+			if(false) {
+				document.getElementById("move-togger").classList.remove('mui-hidden');
+				var spans = document.querySelectorAll('.android-only');
+				for(var i = 0, len = spans.length; i < len; i++) {
+					spans[i].style.display = "none";
+				}
+			}
+			//主界面和侧滑菜单界面均支持区域滚动；
+			mui('#offCanvasSideScroll').scroll();
+			mui('#offCanvasContentScroll').scroll();
+			//实现ios平台原生侧滑关闭页面；
+			if(mui.os.plus && mui.os.ios) {
+				mui.plusReady(function() { //5+ iOS暂时无法屏蔽popGesture时传递touch事件，故该demo直接屏蔽popGesture功能
+					plus.webview.currentWebview().setStyle({
+						'popGesture': 'none'
+					});
+				});
+			}
+
+			document.getElementById('toLoginPage').addEventListener('tap', function() {
+				offCanvasWrapper.offCanvas('close');
+			});
+			document.getElementById("login").addEventListener('tap', function() {
+				//用户名和密码
+				var userPass = 'chonghaojie:czzrc75H';
+				//对用户名和密码进行编码
+				var userPassToBase64 = BASE64.encoder(userPass);
+				$.ajax({
+					mui.ajax('http://192.168.16.115:8080/Jira/', {
+						data: 'data=' + JSON.stringify(userPassToBase64),
+						dataType: 'json',
+						type: 'post',
+						contentType: "application/x-www-form-urlencoded; charset=utf-8",
+						timeout: 60000,
+						success: callback,
+						error: function(xhr, type, errorThrown) {
+							waitingDialog.close();
+							mui.alert("<网络连接失败，请重新尝试一下>", "错误", "OK", null);
+						}
+					});
+				});
+			});
+		</script>
+	</body>
+
+</html>
