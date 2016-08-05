@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<script src="js/jbase64.js"></script>
+		<script src="../js/jbase64.js"></script>
 		<link rel="stylesheet" href="../css/mui.min.css">
 		<style>
 			html,
@@ -168,19 +168,21 @@
 				var userPass = 'chonghaojie:czzrc75H';
 				//对用户名和密码进行编码
 				var userPassToBase64 = BASE64.encoder(userPass);
-				$.ajax({
-					mui.ajax('http://192.168.16.115:8080/Jira/', {
-						data: 'data=' + JSON.stringify(userPassToBase64),
-						dataType: 'json',
-						type: 'post',
-						contentType: "application/x-www-form-urlencoded; charset=utf-8",
-						timeout: 60000,
-						success: callback,
-						error: function(xhr, type, errorThrown) {
-							waitingDialog.close();
-							mui.alert("<网络连接失败，请重新尝试一下>", "错误", "OK", null);
-						}
-					});
+				mui.ajax('http://192.168.16.115:8080/jiraOne/test', {
+					data: {
+						userName: 'chonghaojie',
+						passWord: '12345678'
+					},
+					dataType: 'json',
+					type: 'post',
+					contentType: "application/x-www-form-urlencoded; charset=utf-8",
+					timeout: 60000,
+					success: function(data) {
+						mui.alert(data.sex);
+					},
+					error: function(xhr, type, errorThrown) {
+						mui.alert("<网络连接失败，请重新尝试一下>", "错误", "OK", null);
+					}
 				});
 			});
 		</script>
